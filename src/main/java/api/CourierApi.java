@@ -1,33 +1,46 @@
 package api;
 
 import data.CourierData;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.requestSpecification;
 
-public class CourierApi {
+public class CourierApi extends RestApi{
+
+    public static final String CREATE_COURIER_URI = "/api/v1/courier";
+    public static final String LOGIN_COURIER_URI = "/api/v1/courier/login";
+    public static final String DELETE_COURIER_URI = "/api/v1/courier/{id}";
+
+    @Step("Создание курьера")
     public Response createCourier(CourierData courier){
         return given()
-                .contentType("application/json")
+                .spec(requestSpecification())
+                .and()
                 .body(courier)
                 .when()
-                .post("/api/v1/courier");
+                .post(CREATE_COURIER_URI);
     };
 
+    @Step("Авторизация курьера")
     public Response loginCourier(CourierData courier) {
 
         return given()
-                .contentType("application/json")
+                .spec(requestSpecification())
+                .and()
                 .body(courier)
                 .when()
-                .post("/api/v1/courier/login");
+                .post(LOGIN_COURIER_URI);
     }
 
+    @Step("Удаление курьера после теста")
     public Response deleteCourier(int courierId){
         return given()
-                .contentType("application/json")
+                .spec(requestSpecification())
+                .and()
                 .pathParam("id", courierId)
                 .when()
-                .delete("/api/v1/courier/{id}");
+                .delete(DELETE_COURIER_URI);
     };
 }

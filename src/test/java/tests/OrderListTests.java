@@ -3,7 +3,6 @@ package tests;
 import api.OrderApi;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +15,6 @@ public class OrderListTests {
 
     @Before
     public void setup() {
-        RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru";
-
         orderApi = new OrderApi();
     }
 
@@ -28,9 +25,34 @@ public class OrderListTests {
 
         Response response = orderApi.getOrderList();
 
+        //проверяю, что в списке есть все обязательные поля заказа
         response.then()
                 .assertThat().statusCode(200)
-                .body("orders", is(notNullValue()));
+                .body("orders", hasItems(
+
+                        hasKey("id"),
+
+                        hasKey("courierId"),
+
+                        hasKey("firstName"),
+
+                        hasKey("lastName"),
+
+                        hasKey("address"),
+
+                        hasKey("metroStation"),
+
+                        hasKey("phone"),
+
+                        hasKey("rentTime"),
+
+                        hasKey("deliveryDate"),
+
+                        hasKey("track"),
+
+                        hasKey("status")
+
+                ));
     }
 
 }

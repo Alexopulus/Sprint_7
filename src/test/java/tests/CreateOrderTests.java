@@ -42,7 +42,6 @@ public class CreateOrderTests {
 
     @Before
     public void setup() {
-        RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru";
         orderApi = new OrderApi();
     }
 
